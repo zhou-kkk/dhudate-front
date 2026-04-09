@@ -83,6 +83,11 @@ const DashboardPage: React.FC = () => {
         </div>
         <div className="header-actions">
            <span className="user-email"><User size={16}/> {user?.profile?.nickname || user?.email}</span>
+           {user?.role === 'admin' && (
+             <button className="logout-btn" onClick={() => navigate('/admin')} style={{color: '#E74C3C', fontWeight: 'bold'}}>
+               管理控制台
+             </button>
+           )}
            <button className="logout-btn" onClick={() => navigate('/match/results')} style={{color: 'var(--primary)'}}>
              历史匹配
            </button>

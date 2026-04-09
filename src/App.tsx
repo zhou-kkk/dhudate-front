@@ -11,12 +11,21 @@ import DashboardPage from './features/dashboard/DashboardPage';
 import SurveyPage from './features/survey/SurveyPage';
 import ProfilePage from './features/profile/ProfilePage';
 import MatchResultPage from './features/matching/MatchResultPage';
+import AdminDashboard from './features/admin/AdminDashboard';
 import NetworkStatus from './components/NetworkStatus';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   if (!isAuthenticated) return <Navigate to="/login" replace />;
+  return <>{children}</>;
+};
+
+// Admin Route Wrapper
+const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, user } = useAuthStore();
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (user?.role !== 'admin') return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 };
 
@@ -55,6 +64,12 @@ function App() {
             <ProtectedRoute>
               <MatchResultPage />
             </ProtectedRoute>
+          } />
+
+          <Route path="/admin" element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
           } />
           
           {/* Fallback */}
