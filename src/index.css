@@ -1,0 +1,107 @@
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap');
+
+:root {
+  /* 暖色调暗黑模式 Color Tokens */
+  --bg-dark: #120E15; /* 略带暖调的炭黑背景 */
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-panel: rgba(24, 20, 28, 0.7);
+
+  --text-main: #F4EBE8; /* 暖白 */
+  --text-muted: rgba(244, 235, 232, 0.6);
+  --text-error: #FF6B6B;
+  
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(232, 101, 122, 0.4);
+
+  /* 东华红及暖橘色系 */
+  --primary: #E8657A; 
+  --primary-hover: #D14D65;
+  --accent: #FF8C6B;  /* 暖橘色，用于高亮和渐变搭配 */
+  --primary-transparent: rgba(232, 101, 122, 0.15);
+
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Noto Serif SC', 'Inter', serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-glow: 0 0 20px rgba(232, 101, 122, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  /* subtle warm noise or gradient could be added here, but keep it clean first */
+  background-image: radial-gradient(circle at top right, rgba(232, 101, 122, 0.08) 0%, transparent 40%),
+                    radial-gradient(circle at bottom left, rgba(255, 140, 107, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+/* 玻璃拟态辅助类 */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+}
+
+/* 统一输入框焦点样式 */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-transparent);
+}
+
+/* 移除浏览器默认滚动条，使用自定义细长滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

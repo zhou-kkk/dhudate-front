@@ -1,0 +1,92 @@
+/* src/features/profile/Profile.css */
+
+.profile-wrapper {
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  padding-bottom: 60px;
+}
+
+.profile-header {
+  padding: 24px 40px;
+}
+
+.profile-main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.profile-card {
+  padding: 48px;
+}
+
+.profile-title {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.profile-subtitle {
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  font-size: 0.95rem;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.dhu-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%24%2024%22%20fill%3D%22none%22%20stroke%3D%22%23F4EBE8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.dhu-select option {
+  background: var(--bg-dark);
+}
+
+.dhu-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-transparent);
+  outline: none;
+}
+
+.dhu-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-light);
+}
+
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 24px;
+  }
+}

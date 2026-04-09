@@ -1,0 +1,194 @@
+/* src/features/landing/LandingPage.css */
+
+.landing-wrapper {
+  position: relative;
+  overflow: hidden;
+  color: var(--text-main);
+}
+
+/* 暖色流光背景 */
+.bg-aurora {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: -1;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.2;
+  animation: float 20s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--primary), transparent 70%);
+  top: -10%; left: -10%;
+  animation-duration: 25s;
+}
+
+.orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, var(--accent), transparent 70%);
+  top: 40%; right: -10%;
+  animation-delay: -5s;
+}
+
+.orb-3 {
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, #D14D65, transparent 70%);
+  bottom: -20%; left: 20%;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, -50px) scale(1.1); }
+  66% { transform: translate(-30px, 40px) scale(0.9); }
+}
+
+/* 导航栏 */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 48px;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  background: rgba(18, 14, 21, 0.6);
+}
+
+.nav-brand-text {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-actions {
+  display: flex; gap: 16px;
+}
+
+/* 英雄区域 */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 20px;
+  background: var(--primary-transparent);
+  border: 1px solid rgba(232, 101, 122, 0.3);
+  border-radius: var(--radius-full);
+  color: var(--accent);
+  font-weight: 500; font-size: 0.9rem;
+  margin-bottom: 32px;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-desc {
+  max-width: 640px;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 48px;
+}
+
+.hero-cta {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+
+.cta-main {
+  font-size: 1.1rem;
+  padding: 16px 48px;
+  border-radius: var(--radius-full);
+  display: flex; gap: 12px;
+}
+
+.cta-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* 特性介绍 */
+.features {
+  padding: 80px 24px 120px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.feature-card {
+  padding: 40px 32px;
+  height: 100%;
+}
+
+.feature-icon {
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, var(--primary-transparent), rgba(255, 140, 107, 0.15));
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+.feature-icon svg {
+  width: 28px; height: 28px;
+}
+
+.feature-card h3 {
+  font-size: 1.3rem; margin-bottom: 16px;
+}
+
+.feature-card p {
+  color: var(--text-muted); line-height: 1.7;
+}
+
+/* 底部版权 */
+footer {
+  text-align: center;
+  padding: 48px 24px;
+  border-top: 1px solid var(--border-light);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+footer p:last-child {
+  margin-top: 8px;
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .navbar { padding: 16px 24px; }
+  .hero-title { font-size: 2.2rem; }
+  .features-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,81 @@
+/* src/components/ui/Input.css */
+.dhu-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.dhu-input-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.dhu-input-required {
+  color: var(--primary);
+  margin-left: 4px;
+}
+
+.dhu-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dhu-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.dhu-input-with-icon {
+  padding-left: 44px;
+}
+
+.dhu-input:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dhu-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-transparent);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.dhu-input::placeholder {
+  color: rgba(244, 235, 232, 0.3);
+}
+
+.dhu-input-error {
+  border-color: var(--text-error);
+}
+
+.dhu-input-error:focus {
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.15);
+}
+
+.dhu-input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dhu-input:focus ~ .dhu-input-icon {
+  color: var(--primary);
+}
+
+.dhu-input-error-message {
+  font-size: 0.8rem;
+  color: var(--text-error);
+  margin-top: 2px;
+}

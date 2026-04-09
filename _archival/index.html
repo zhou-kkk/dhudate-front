@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- SEO 基础 -->
+  <title>DHU Date | 东华大学校园匹配平台</title>
+  <meta name="description" content="DHU Date — 面向东华大学学生的校内恋爱匹配平台。深度价值观问卷，每周定时配对，遇见真正契合的人。仅限 @dhu.edu.cn 注册。" />
+  <meta name="keywords" content="DHU Date, 东华大学, 校园配对, 大学相亲, 校园恋爱, 价值观配对, 学生匹配, 东华" />
+  <meta name="author" content="DHU Date Team" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dhudate.com/" />
+  <meta property="og:title" content="DHU Date | 东华大学校园匹配平台" />
+  <meta property="og:description" content="深度价值观问卷，每周定时配对，遇见真正契合的人。" />
+  <meta property="og:locale" content="zh_CN" />
+
+  <!-- 主题色 -->
+  <meta name="theme-color" content="#E8657A" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="apple-touch-icon" href="assets/logo.png" />
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================
+       CSS 变量与全局重置
+       ============================================ */
+    :root {
+      --color-primary: #E8657A;
+      --color-primary-dark: #D14D65;
+      --color-primary-light: #F5A0AD;
+      --color-accent: #FF8C6B;
+      --color-accent-warm: #FFB088;
+      --color-lavender: #C4A0E8;
+      --color-bg-dark: #0D0A14;
+      --color-bg-card: rgba(255, 255, 255, 0.04);
+      --color-bg-card-hover: rgba(255, 255, 255, 0.08);
+      --color-text: #F0EBF4;
+      --color-text-secondary: rgba(240, 235, 244, 0.6);
+      --color-border: rgba(255, 255, 255, 0.08);
+      --font-display: 'Noto Serif SC', serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --radius-xl: 40px;
+    }
+
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg-dark);
+      color: var(--color-text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ============================================
+       背景装饰
+       ============================================ */
+    .bg-aurora {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-aurora .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.25;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .bg-aurora .orb:nth-child(1) {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--color-primary), transparent 70%);
+      top: -10%; left: -5%;
+      animation-delay: 0s;
+      animation-duration: 25s;
+    }
+
+    .bg-aurora .orb:nth-child(2) {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--color-accent), transparent 70%);
+      top: 40%; right: -10%;
+      animation-delay: -5s;
+      animation-duration: 22s;
+    }
+
+    .bg-aurora .orb:nth-child(3) {
+      width: 450px; height: 450px;
+      background: radial-gradient(circle, var(--color-lavender), transparent 70%);
+      bottom: -15%; left: 30%;
+      animation-delay: -10s;
+      animation-duration: 28s;
+    }
+
+    .bg-aurora .orb:nth-child(4) {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, var(--color-primary-light), transparent 70%);
+      top: 20%; left: 50%;
+      animation-delay: -15s;
+      animation-duration: 30s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(40px, -30px) scale(1.05); }
+      50% { transform: translate(-20px, 50px) scale(0.95); }
+      75% { transform: translate(30px, 20px) scale(1.02); }
+    }
+
+    /* 网格纹理 */
+    .bg-grid {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================
+       粒子画布
+       ============================================ */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ============================================
+       导航栏
+       ============================================ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+      background: rgba(13, 10, 20, 0.6);
+      border-bottom: 1px solid var(--color-border);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .navbar.scrolled {
+      padding: 14px 40px;
+      background: rgba(13, 10, 20, 0.85);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .nav-brand img {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .nav-brand-text {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: rgba(232, 101, 122, 0.12);
+      border: 1px solid rgba(232, 101, 122, 0.2);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--color-primary-light);
+      font-weight: 500;
+    }
+
+    .nav-status .pulse-dot {
+      width: 8px; height: 8px;
+      background: var(--color-primary);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* ============================================
+       主英雄区域
+       ============================================ */
+    .hero {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      text-align: center;
+    }
+
+    /* 装饰徽章 */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: linear-gradient(135deg, rgba(232,101,122,0.15), rgba(255,140,107,0.10));
+      border: 1px solid rgba(232, 101, 122, 0.25);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--color-accent-warm);
+      font-weight: 500;
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .hero-badge svg {
+      width: 16px; height: 16px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent) 50%, var(--color-lavender) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradientShift 5s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: var(--color-text-secondary);
+      font-weight: 400;
+      margin-bottom: 28px;
+      animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+
+    .hero-desc {
+      max-width: 640px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--color-text-secondary);
+      margin-bottom: 48px;
+      animation: fadeInUp 0.8s ease-out 0.8s both;
+    }
+
+    /* CTA 区域 */
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      animation: fadeInUp 0.8s ease-out 1s both;
+    }
+
+    .cta-label {
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .cta-email {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 36px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      box-shadow:
+        0 4px 24px rgba(232, 101, 122, 0.35),
+        0 0 0 0 rgba(232, 101, 122, 0);
+      overflow: hidden;
+    }
+
+    .cta-email::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .cta-email:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow:
+        0 8px 40px rgba(232, 101, 122, 0.5),
+        0 0 0 4px rgba(232, 101, 122, 0.15);
+    }
+
+    .cta-email:hover::before {
+      left: 100%;
+    }
+
+    .cta-email svg {
+      width: 22px; height: 22px;
+    }
+
+    .cta-copy-hint {
+      font-size: 0.82rem;
+      color: var(--color-text-secondary);
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+
+    .cta-copy-hint.copied {
+      color: var(--color-accent);
+      opacity: 1;
+    }
+
+    /* ============================================
+       功能预览卡片区域
+       ============================================ */
+    .features {
+      position: relative;
+      z-index: 2;
+      padding: 60px 24px 100px;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .features-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .features-header p {
+      color: var(--color-text-secondary);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .features-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      position: relative;
+      padding: 40px 32px;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .feature-card:hover {
+      background: var(--color-bg-card-hover);
+      border-color: rgba(232, 101, 122, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 56px; height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(232,101,122,0.15), rgba(255,140,107,0.10));
+      border-radius: 16px;
+      margin-bottom: 24px;
+      font-size: 1.6rem;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      color: var(--color-text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .feature-tag {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 4px 14px;
+      background: rgba(196, 160, 232, 0.1);
+      border: 1px solid rgba(196, 160, 232, 0.2);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      color: var(--color-lavender);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       时间线区域
+       ============================================ */
+    .timeline-section {
+      position: relative;
+      z-index: 2;
+      padding: 80px 24px 100px;
+    }
+
+    .timeline-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .timeline {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 24px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--color-primary), var(--color-lavender), transparent);
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 48px;
+      position: relative;
+    }
+
+    .timeline-dot {
+      width: 50px; height: 50px;
+      min-width: 50px;
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      z-index: 1;
+      transition: all 0.3s;
+    }
+
+    .timeline-item:hover .timeline-dot {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border-color: transparent;
+      transform: scale(1.1);
+    }
+
+    .timeline-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .timeline-content p {
+      color: var(--color-text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .timeline-tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 12px;
+      background: rgba(232, 101, 122, 0.1);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      color: var(--color-primary-light);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       底部 CTA
+       ============================================ */
+    .bottom-cta {
+      position: relative;
+      z-index: 2;
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .bottom-cta-card {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 48px;
+      background: linear-gradient(135deg, rgba(232,101,122,0.08), rgba(196,160,232,0.06));
+      border: 1px solid rgba(232, 101, 122, 0.15);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(20px);
+    }
+
+    .bottom-cta-card h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .bottom-cta-card p {
+      color: var(--color-text-secondary);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .contact-methods {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+
+    .contact-btn.primary {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(232, 101, 122, 0.3);
+    }
+
+    .contact-btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(232, 101, 122, 0.45);
+    }
+
+    .contact-btn.secondary {
+      background: var(--color-bg-card);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .contact-btn.secondary:hover {
+      border-color: var(--color-primary);
+      background: var(--color-bg-card-hover);
+    }
+
+    .contact-btn svg {
+      width: 18px; height: 18px;
+    }
+
+    /* ============================================
+       页脚
+       ============================================ */
+    footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--color-border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    footer p {
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--color-primary-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: var(--color-primary);
+    }
+
+    /* ============================================
+       动画
+       ============================================ */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       响应式
+       ============================================ */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 16px 20px;
+      }
+
+      .navbar.scrolled {
+        padding: 12px 20px;
+      }
+
+      .nav-status {
+        display: none;
+      }
+
+      .hero {
+        padding: 100px 20px 60px;
+      }
+
+      .cta-email {
+        padding: 16px 28px;
+        font-size: 1rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        padding: 32px 24px;
+      }
+
+      .bottom-cta-card {
+        padding: 48px 28px;
+      }
+
+      .contact-methods {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .timeline::before {
+        left: 16px;
+      }
+
+      .timeline-dot {
+        width: 34px; height: 34px;
+        min-width: 34px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* ============================================
+       滚动条美化
+       ============================================ */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--color-bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(232, 101, 122, 0.3);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(232, 101, 122, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 背景装饰层 -->
+  <div class="bg-aurora">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+  <div class="bg-grid"></div>
+
+  <!-- 粒子画布 -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- 导航栏 -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="nav-brand">
+      <img src="assets/logo.png" alt="DHU Date Logo" />
+      <span class="nav-brand-text">DHU Date</span>
+    </a>
+    <div class="nav-status">
+      <span class="pulse-dot"></span>
+      项目策划中
+    </div>
+  </nav>
+
+  <!-- 英雄区域 -->
+  <section class="hero" id="hero">
+    <div class="hero-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+      </svg>
+      面向东华大学全体在校生
+    </div>
+
+    <h1 class="hero-title">
+      遇见那个<br/>
+      <span class="gradient-text">最契合的人</span>
+    </h1>
+
+    <p class="hero-subtitle">DHU Date — 东华大学校园匹配平台</p>
+
+    <p class="hero-desc">
+      我们正在打造一个基于深度价值观问卷的校园匹配平台。<br/>
+      不靠颜值滑动，不做无效社交——<br/>
+      用科学算法，帮你找到灵魂契合的那个人。
+    </p>
+
+    <div class="hero-cta">
+      <span class="cta-label">📮 项目策划中，感兴趣请联系</span>
+      <a href="mailto:admin@dhudate.com" class="cta-email" id="cta-email" onclick="copyEmail(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="M22 4L12 13L2 4"/>
+        </svg>
+        admin@dhudate.com
+      </a>
+      <span class="cta-copy-hint" id="copy-hint">点击发送邮件 · 或右键复制地址</span>
+    </div>
+  </section>
+
+  <!-- 功能预览 -->
+  <section class="features" id="features">
+    <div class="features-header fade-in">
+      <h2>我们计划做什么？</h2>
+      <p>一款专为东华学子打造的深度匹配平台，让对的人相遇不再依靠运气。</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card fade-in">
+        <div class="feature-icon">📋</div>
+        <h3>深度价值观问卷</h3>
+        <p>基于心理学量表设计，覆盖核心价值观、生活习惯、情感风格、人生规划等多个维度，全面了解真实的你。</p>
+        <span class="feature-tag">60+ 精选问题</span>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🧠</div>
+        <h3>科学算法匹配</h3>
+        <p>不是随机配对，而是基于多维度契合度计算的智能匹配。系统会综合分析你们的相似性与互补性，给出最优推荐。</p>
+        <span class="feature-tag">AI 驱动</span>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon">📅</div>
+        <h3>每周定时配对</h3>
+        <p>告别无休止的"左滑右滑"。每周固定时间揭晓匹配结果，给你期待感，也给每一段可能性以足够的重视。</p>
+        <span class="feature-tag">仪式感社交</span>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🔒</div>
+        <h3>校园专属安全</h3>
+        <p>仅限 @dhu.edu.cn / @mail.dhu.edu.cn 学校邮箱注册，确保每一位用户都是真实的东华在校生，安全可信赖。</p>
+        <span class="feature-tag">实名认证</span>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon">💌</div>
+        <h3>匹配理由可见</h3>
+        <p>不仅告诉你"谁和你最配"，还会提供详细的匹配分析报告，让你了解彼此契合的维度和原因。</p>
+        <span class="feature-tag">透明匹配</span>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🌈</div>
+        <h3>包容多元</h3>
+        <p>支持恋爱匹配、深度友谊匹配等多种模式。无论你的需求是什么，都能在这里找到志同道合的人。</p>
+        <span class="feature-tag">多元场景</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 时间线 -->
+  <section class="timeline-section fade-in" id="timeline">
+    <h2>项目进展路线图</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">🔥</div>
+        <div class="timeline-content">
+          <h3>项目策划阶段</h3>
+          <p>确定核心功能、技术选型，组建开发团队，完成产品原型设计。</p>
+          <span class="timeline-tag">📍 当前阶段</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">🛠️</div>
+        <div class="timeline-content">
+          <h3>问卷与算法设计</h3>
+          <p>与心理学专业同学合作，设计科学的价值观问卷体系，开发匹配算法核心。</p>
+          <span class="timeline-tag">即将启动</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">🎨</div>
+        <div class="timeline-content">
+          <h3>产品开发与测试</h3>
+          <p>前端界面开发、后端系统搭建、小范围内测收集反馈并持续迭代。</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">🚀</div>
+        <div class="timeline-content">
+          <h3>正式上线</h3>
+          <p>面向全校师生开放注册，开启第一轮正式匹配，期待与你相遇！</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 底部行动号召 -->
+  <section class="bottom-cta">
+    <div class="bottom-cta-card fade-in">
+      <h2>一起打造东华人自己的匹配平台 ❤️</h2>
+      <p>
+        无论你是开发者、设计师、心理学爱好者，<br/>
+        还是对校园社交有独特想法的你——<br/>
+        都欢迎加入我们的策划团队！
+      </p>
+      <div class="contact-methods">
+        <a href="mailto:admin@dhudate.com" class="contact-btn primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 4L12 13L2 4"/>
+          </svg>
+          发送邮件
+        </a>
+        <a href="https://dhudate.com" class="contact-btn secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          dhudate.com
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>
+      &copy; 2026 <a href="https://dhudate.com">DHU Date</a> · 东华大学校园匹配平台 · 
+      Made with ❤️ by 东华学子
+    </p>
+  </footer>
+
+  <script>
+    // ============================================
+    // 粒子动画系统
+    // ============================================
+    (function() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let animationId;
+
+      // 自适应画布尺寸
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // 粒子类
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2.5 + 0.5;
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.opacity = Math.random() * 0.4 + 0.1;
+          this.hue = Math.random() > 0.5 ? 350 : 20; // 粉色或橙色
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x < 0 || this.x > canvas.width ||
+              this.y < 0 || this.y > canvas.height) {
+            this.reset();
+          }
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${this.hue}, 70%, 70%, ${this.opacity})`;
+          ctx.fill();
+        }
+      }
+
+      // 根据屏幕大小创建粒子
+      const count = Math.min(80, Math.floor(window.innerWidth * window.innerHeight / 15000));
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+
+      // 绘制连线
+      function drawLines() {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 150) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(232, 101, 122, ${0.06 * (1 - dist / 150)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // 动画循环
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        drawLines();
+        animationId = requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // ============================================
+    // 导航栏滚动效果
+    // ============================================
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ============================================
+    // 滚动显示动画 (Intersection Observer)
+    // ============================================
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // 延迟交错动画
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, i * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ============================================
+    // 邮件点击与复制功能
+    // ============================================
+    function copyEmail(e) {
+      // 默认行为是打开邮件客户端，这里不阻止
+      const hint = document.getElementById('copy-hint');
+
+      // 同时复制到剪贴板
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText('admin@dhudate.com').then(() => {
+          hint.textContent = '✅ 邮箱已复制到剪贴板！';
+          hint.classList.add('copied');
+          setTimeout(() => {
+            hint.textContent = '点击发送邮件 · 或右键复制地址';
+            hint.classList.remove('copied');
+          }, 3000);
+        });
+      }
+    }
+  </script>
+</body>
+</html>
