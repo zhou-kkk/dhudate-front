@@ -74,6 +74,26 @@ const SurveyPage: React.FC = () => {
 
   const handleSelect = (val: string) => {
     if (!currentQ) return;
+
+    if (currentQ.type === 'multiple_choice') {
+      let arr: string[] = [];
+      try {
+        if (currentVal.startsWith('[')) {
+          arr = JSON.parse(currentVal);
+        } else if (currentVal) {
+          arr = [currentVal];
+        }
+      } catch {}
+      
+      if (arr.includes(val)) {
+        arr = arr.filter(v => v !== val);
+      } else {
+        arr.push(val);
+      }
+      setAnswer(currentQ.id, JSON.stringify(arr));
+      return; // 多选题不自动跳转，让用户保留在当前页继续选
+    }
+
     setAnswer(currentQ.id, val);
     
     // 如果是最后一题不会自动下一题，否则延迟 300ms 自动下一题
@@ -205,16 +225,32 @@ const SurveyPage: React.FC = () => {
                     </div>
                   ) : (
                     <div className="choice-group">
-                      {options.map((opt, i) => (
-                        <button
-                          key={i}
-                          className={`choice-btn ${currentVal === opt ? 'selected' : ''}`}
-                          onClick={() => handleSelect(opt)}
-                        >
-                          <span className="choice-indicator" />
-                          {opt}
-                        </button>
-                      ))}
+                      {options.map((opt, i) => {
+                        let isSelected = false;
+                        if (currentQ.type === 'multiple_choice') {
+                           try {
+                             if (currentVal.startsWith('[')) {
+                               const arr = JSON.parse(currentVal);
+                               isSelected = arr.includes(opt);
+                             } else {
+                               isSelected = currentVal === opt;
+                             }
+                           } catch { isSelected = false; }
+                        } else {
+                           isSelected = currentVal === opt;
+                        }
+
+                        return (
+                          <button
+                            key={i}
+                            className={`choice-btn ${isSelected ? 'selected' : ''}`}
+                            onClick={() => handleSelect(opt)}
+                          >
+                            <span className="choice-indicator" />
+                            {opt}
+                          </button>
+                        );
+                      })}
                     </div>
                   )}
                 </div>

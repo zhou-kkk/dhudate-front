@@ -156,12 +156,14 @@
   box-shadow: 0 0 12px var(--primary);
 }
 
-/* 渐变大小以暗示程度 */
-.likert-btn:nth-child(1) { width: 56px; height: 56px; }
-.likert-btn:nth-child(2) { width: 48px; height: 48px; }
+/* 渐变大小以暗示程度（7分量表） */
+.likert-btn:nth-child(1) { width: 60px; height: 60px; }
+.likert-btn:nth-child(2) { width: 52px; height: 52px; }
 .likert-btn:nth-child(3) { width: 44px; height: 44px; }
-.likert-btn:nth-child(4) { width: 48px; height: 48px; }
-.likert-btn:nth-child(5) { width: 56px; height: 56px; }
+.likert-btn:nth-child(4) { width: 38px; height: 38px; }
+.likert-btn:nth-child(5) { width: 44px; height: 44px; }
+.likert-btn:nth-child(6) { width: 52px; height: 52px; }
+.likert-btn:nth-child(7) { width: 60px; height: 60px; }
 
 /* Choice Group UI */
 .choice-group {
