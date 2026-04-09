@@ -21,6 +21,7 @@ const AdminDashboard: React.FC = () => {
   const [loadingStats, setLoadingStats] = useState(true);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [isTriggering, setIsTriggering] = useState(false);
+  const [isSimulating, setIsSimulating] = useState(false);
 
   useEffect(() => {
     fetchStats();
@@ -52,6 +53,26 @@ const AdminDashboard: React.FC = () => {
       error('无法获取花名册: ' + err.message);
     } finally {
       setLoadingUsers(false);
+    }
+  };
+
+  const handleSimulateMatch = async () => {
+    if (!stats?.current_round) return;
+    setIsSimulating(true);
+    try {
+      const res = await adminApi.simulateMatchRound();
+      window.alert(
+        `【模拟匹配测算完成】\n` +
+        `参与人数: ${res.total_participants} 人\n` +
+        `产出对数: ${res.matched_pairs} 对\n` +
+        `成双率(参与度): ${res.success_rate}%\n` +
+        `总体均分: ${res.avg_score} 分\n` +
+        `耗时: ${res.time_cost_ms} 毫秒`
+      );
+    } catch (err: any) {
+      error('模拟匹配失败: ' + err.message);
+    } finally {
+      setIsSimulating(false);
     }
   };
 
@@ -124,15 +145,26 @@ const AdminDashboard: React.FC = () => {
                       <div className="stat-label">进行中轮次: 第 {stats.current_round.round_number} 期</div>
                       <div className="stat-num">{stats.current_round.participants} 人</div>
                       <div className="stat-sub">等待发车 / 状态: {stats.current_round.status}</div>
-                      <Button 
-                        size="sm" 
-                        variant="primary" 
-                        onClick={handleTriggerMatch} 
-                        isLoading={isTriggering}
-                        style={{ marginTop: 12, width: '100%' }}
-                      >
-                        <Zap size={14} style={{marginRight: 6}} /> 强制一键匹配
-                      </Button>
+                      <div style={{ display: 'flex', gap: '8px', marginTop: 12 }}>
+                        <Button 
+                           size="sm" 
+                           variant="outline" 
+                           onClick={handleSimulateMatch} 
+                           isLoading={isSimulating}
+                           style={{ flex: 1 }}
+                        >
+                          纯净模拟测算
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="primary" 
+                          onClick={handleTriggerMatch} 
+                          isLoading={isTriggering}
+                          style={{ flex: 1 }}
+                        >
+                          <Zap size={14} style={{marginRight: 6}} /> 强制一键匹配
+                        </Button>
+                      </div>
                     </>
                  ) : (
                     <>

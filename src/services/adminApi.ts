@@ -36,6 +36,15 @@ export interface AdminUserListResponse {
   size: number;
 }
 
+export interface AdminSimulateResponse {
+  round_id: string;
+  total_participants: number;
+  matched_pairs: number;
+  success_rate: number;
+  avg_score: number;
+  time_cost_ms: number;
+}
+
 export const adminApi = {
   getStats: async (): Promise<AdminStatsResponse> => {
     return await api.get('/admin/stats');
@@ -47,5 +56,9 @@ export const adminApi = {
 
   triggerMatchRound: async (roundId: string = 'current'): Promise<void> => {
     return await api.post(`/admin/rounds/${roundId}/trigger`);
+  },
+
+  simulateMatchRound: async (roundId: string = 'current'): Promise<AdminSimulateResponse> => {
+    return await api.post(`/admin/rounds/${roundId}/simulate`);
   }
 };
