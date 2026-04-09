@@ -14,7 +14,7 @@ const ResetPasswordPage: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  
+
   const navigate = useNavigate();
   const { success, error, toast } = useToast();
 
@@ -71,8 +71,8 @@ const ResetPasswordPage: React.FC = () => {
   };
 
   return (
-    <AuthLayout 
-      title="重置密码" 
+    <AuthLayout
+      title="重置密码"
       subtitle={step === 1 ? "输入您注册时使用的校园邮箱" : `验证码已发送至 ${email}`}
       showBack={true}
     >
@@ -80,14 +80,14 @@ const ResetPasswordPage: React.FC = () => {
         <form className="auth-form" onSubmit={handleSendCode}>
           <Input
             type="email"
-            placeholder="校园邮箱 (@dhu.edu.cn)"
+            placeholder="校园邮箱 (学号@mail.dhu.edu.cn)"
             icon={<Mail size={18} />}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Button type="submit" disabled={!email} isLoading={isLoading}>
-            获取重置验证码 <ArrowRight size={18} style={{marginLeft: 8}} />
+            获取重置验证码 <ArrowRight size={18} style={{ marginLeft: 8 }} />
           </Button>
         </form>
       ) : (
@@ -102,10 +102,10 @@ const ResetPasswordPage: React.FC = () => {
               onChange={(e) => setCode(e.target.value)}
               required
             />
-            <Button 
-              type="button" 
-              variant="outline" 
-              disabled={countdown > 0} 
+            <Button
+              type="button"
+              variant="outline"
+              disabled={countdown > 0}
               onClick={handleSendCode}
               style={{ minWidth: '110px' }}
             >
@@ -125,9 +125,9 @@ const ResetPasswordPage: React.FC = () => {
             重置密码
           </Button>
           <div style={{ textAlign: 'center', marginTop: 8 }}>
-             <Button type="button" variant="ghost" size="sm" onClick={() => setStep(1)}>
-               返回修改邮箱
-             </Button>
+            <Button type="button" variant="ghost" size="sm" onClick={() => setStep(1)}>
+              返回修改邮箱
+            </Button>
           </div>
         </form>
       )}

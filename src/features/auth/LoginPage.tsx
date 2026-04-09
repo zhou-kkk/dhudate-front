@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
       <form className="auth-form" onSubmit={handleSubmit}>
         <Input
           type="email"
-          placeholder="校园邮箱 (@dhu.edu.cn)"
+          placeholder="校园邮箱 (学号@mail.dhu.edu.cn)"
           icon={<Mail size={18} />}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -51,7 +51,7 @@ const LoginPage: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        
+
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '-10px' }}>
           <Link to="/reset-password" style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
             忘记密码？

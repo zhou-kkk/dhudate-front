@@ -11,6 +11,7 @@ import DashboardPage from './features/dashboard/DashboardPage';
 import SurveyPage from './features/survey/SurveyPage';
 import ProfilePage from './features/profile/ProfilePage';
 import MatchResultPage from './features/matching/MatchResultPage';
+import NetworkStatus from './components/NetworkStatus';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -22,6 +23,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 function App() {
   return (
     <ToastProvider>
+      <NetworkStatus />
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}

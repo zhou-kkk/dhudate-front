@@ -1,13 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Heart, Clock, ArrowRight } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
+import { api } from '../../services/api';
 import './LandingPage.css';
+
+interface PublicStats {
+  registered_users: number;
+  successful_matches: number;
+  avg_match_score: number;
+}
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const [stats, setStats] = useState<PublicStats>({
+    registered_users: 100, // placeholder default
+    successful_matches: 0,
+    avg_match_score: 85.0
+  });
+
+  useEffect(() => {
+    // 拉取后端真实统计数据
+    api.get<any, PublicStats>('/stats')
+      .then(data => {
+         if (data) {
+            setStats({
+              registered_users: data.registered_users || 0,
+              successful_matches: data.successful_matches || 0,
+              avg_match_score: data.avg_match_score || 0
+            });
+         }
+      })
+      .catch(() => {
+         console.warn("未能拉取到公开统计数据，使用默认占位符");
+      });
+  }, []);
 
   return (
     <div className="landing-wrapper">
@@ -74,6 +103,28 @@ const LandingPage: React.FC = () => {
           </Button>
           <p className="cta-hint">需要使用 @dhu.edu.cn 邮箱注册</p>
         </motion.div>
+
+        {/* 动态统计看板 */}
+        <motion.div 
+          className="hero-stats"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          style={{ display: 'flex', gap: '40px', marginTop: '40px', justifyContent: 'center' }}
+        >
+          <div className="stat-item" style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--text-main)' }}>{stats.registered_users}+</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>注册学子</div>
+          </div>
+          <div className="stat-item" style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.successful_matches}</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>成就缘分</div>
+          </div>
+          <div className="stat-item" style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--accent)' }}>{stats.avg_match_score}%</div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>平均契合</div>
+          </div>
+        </motion.div>
       </section>
 
       {/* 特性介绍 */}
@@ -107,8 +158,8 @@ const LandingPage: React.FC = () => {
 
       {/* 底部版权 */}
       <footer>
-        <p>© 2026 DHU Date. All rights reserved.</p>
-        <p>此平台由东华大学学生独立开发运营，仅供校内交流使用。</p>
+        <p>© 2026 配朵花. All rights reserved.</p>
+        <p>此平台由大学学生独立开发运营，仅供校内交流使用。</p>
       </footer>
     </div>
   );

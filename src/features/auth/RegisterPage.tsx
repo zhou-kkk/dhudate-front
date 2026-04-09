@@ -15,7 +15,7 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  
+
   const navigate = useNavigate();
   const { success, error } = useToast();
   const loginBase = useAuthStore(state => state.loginBase);
@@ -73,8 +73,8 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <AuthLayout 
-      title={step === 1 ? "创建账号" : "验证邮箱"} 
+    <AuthLayout
+      title={step === 1 ? "创建账号" : "验证邮箱"}
       subtitle={step === 1 ? "使用东华大学校园邮箱注册" : `验证码已发送至 ${email}`}
       showBack={step === 1}
     >
@@ -82,14 +82,14 @@ const RegisterPage: React.FC = () => {
         <form className="auth-form" onSubmit={handleSendCode}>
           <Input
             type="email"
-            placeholder="校园邮箱 (@dhu.edu.cn)"
+            placeholder="校园邮箱 (学号@mail.dhu.edu.cn)"
             icon={<Mail size={18} />}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Button type="submit" disabled={!email} isLoading={isLoading}>
-            获取验证码 <ArrowRight size={18} style={{marginLeft: 8}} />
+            获取验证码 <ArrowRight size={18} style={{ marginLeft: 8 }} />
           </Button>
         </form>
       ) : (
@@ -104,10 +104,10 @@ const RegisterPage: React.FC = () => {
               onChange={(e) => setCode(e.target.value)}
               required
             />
-            <Button 
-              type="button" 
-              variant="outline" 
-              disabled={countdown > 0} 
+            <Button
+              type="button"
+              variant="outline"
+              disabled={countdown > 0}
               onClick={handleSendCode}
               style={{ minWidth: '110px' }}
             >
@@ -127,9 +127,9 @@ const RegisterPage: React.FC = () => {
             完成注册
           </Button>
           <div style={{ textAlign: 'center', marginTop: 8 }}>
-             <Button type="button" variant="ghost" size="sm" onClick={() => setStep(1)}>
-               更换邮箱
-             </Button>
+            <Button type="button" variant="ghost" size="sm" onClick={() => setStep(1)}>
+              更换邮箱
+            </Button>
           </div>
         </form>
       )}
