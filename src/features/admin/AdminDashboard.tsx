@@ -65,7 +65,7 @@ const AdminDashboard: React.FC = () => {
         `【模拟匹配测算完成】\n` +
         `参与人数: ${res.total_participants} 人\n` +
         `产出对数: ${res.matched_pairs} 对\n` +
-        `成双率(参与度): ${res.success_rate}%\n` +
+        `成双率(参与度): ${(res.success_rate * 100).toFixed(1)}%\n` +
         `总体均分: ${res.avg_score} 分\n` +
         `耗时: ${res.time_cost_ms} 毫秒`
       );
