@@ -10,6 +10,7 @@ import type { SurveyStatus } from '../../services/survey';
 import { matchApi } from '../../services/matchApi';
 import type { MatchRoundResponse } from '../../services/matchApi';
 import { useToast } from '../../components/ui/Toast';
+import { useCountdown } from '../../hooks/useCountdown';
 import './Dashboard.css';
 
 const DashboardPage: React.FC = () => {
@@ -21,6 +22,7 @@ const DashboardPage: React.FC = () => {
   const [round, setRound] = useState<MatchRoundResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
+  const countdownText = useCountdown(round?.status === 'scheduled' ? round.scheduled_at : undefined);
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -143,8 +145,8 @@ const DashboardPage: React.FC = () => {
             </div>
             <h2 className="round-name">第 {round?.round_number || '?'} 期</h2>
             {round && (
-              <div className="round-countdown">
-                <Clock size={16} /> 即将截止并开始算法匹配
+              <div className="round-countdown" style={{ color: round.status === 'scheduled' ? 'var(--primary)' : 'var(--text-muted)' }}>
+                <Clock size={16} /> {round.status === 'scheduled' && countdownText ? countdownText : '本次匹配报名截止'}
               </div>
             )}
             <p style={{ marginTop: 8 }}>

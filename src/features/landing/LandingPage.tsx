@@ -5,12 +5,14 @@ import { Shield, Heart, Clock, ArrowRight } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { api } from '../../services/api';
+import { useCountdown } from '../../hooks/useCountdown';
 import './LandingPage.css';
 
 interface PublicStats {
   registered_users: number;
   successful_matches: number;
   avg_match_score: number;
+  current_round: { scheduled_at: string; status: string; round_number: number } | null;
 }
 
 const LandingPage: React.FC = () => {
@@ -18,8 +20,11 @@ const LandingPage: React.FC = () => {
   const [stats, setStats] = useState<PublicStats>({
     registered_users: 100, // placeholder default
     successful_matches: 0,
-    avg_match_score: 85.0
+    avg_match_score: 85.0,
+    current_round: null
   });
+
+  const countdownText = useCountdown(stats.current_round?.status === 'scheduled' ? stats.current_round.scheduled_at : undefined);
 
   useEffect(() => {
     // 拉取后端真实统计数据
@@ -29,7 +34,8 @@ const LandingPage: React.FC = () => {
             setStats({
               registered_users: data.registered_users || 0,
               successful_matches: data.successful_matches || 0,
-              avg_match_score: data.avg_match_score || 0
+              avg_match_score: data.avg_match_score || 0,
+              current_round: data.current_round || null
             });
          }
       })
@@ -101,7 +107,15 @@ const LandingPage: React.FC = () => {
           >
             开启匹配之旅 <ArrowRight size={18} />
           </Button>
-          <p className="cta-hint">需要使用 @dhu.edu.cn 邮箱注册</p>
+          <div style={{ marginTop: 12, minHeight: 24 }}>
+             {stats.current_round?.status === 'scheduled' && countdownText ? (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--primary)', fontWeight: 500, background: 'rgba(231, 76, 60, 0.1)', padding: '6px 12px', borderRadius: 20, fontSize: '0.9rem' }}>
+                  <Clock size={15} /> 第 {stats.current_round.round_number} 期 {countdownText}
+                </div>
+             ) : (
+                <p className="cta-hint">需要使用 @dhu.edu.cn 邮箱注册</p>
+             )}
+          </div>
         </motion.div>
 
         {/* 动态统计看板 */}
