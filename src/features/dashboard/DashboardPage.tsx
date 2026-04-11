@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { LogOut, User, Clock, Heart, ArrowRight, PenSquare } from 'lucide-react';
 import { api } from '../../services/api';
+import { userApi } from '../../services/userApi';
 import { surveyService } from '../../services/survey';
 import type { SurveyStatus } from '../../services/survey';
 import { matchApi } from '../../services/matchApi';
@@ -14,7 +15,7 @@ import { useCountdown } from '../../hooks/useCountdown';
 import './Dashboard.css';
 
 const DashboardPage: React.FC = () => {
-  const { user, logout } = useAuthStore();
+  const { user, logout, updateUser } = useAuthStore();
   const navigate = useNavigate();
   const { success, error, toast } = useToast();
   
@@ -27,12 +28,16 @@ const DashboardPage: React.FC = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const [s, r] = await Promise.all([
+        const [s, r, me] = await Promise.all([
           surveyService.getSurveyStatus(),
-          matchApi.getCurrentRound()
+          matchApi.getCurrentRound(),
+          userApi.getMe()
         ]);
         setSurveyStatus(s);
         setRound(r);
+        if (me && me.profile !== undefined) {
+          updateUser({ profile: me.profile });
+        }
       } catch (err) {
         console.error('获取状态失败', err);
       } finally {
@@ -40,7 +45,7 @@ const DashboardPage: React.FC = () => {
       }
     };
     fetchStatus();
-  }, []);
+  }, [updateUser]);
 
   const handleLogout = async () => {
     try {
