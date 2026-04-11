@@ -61,13 +61,21 @@ const AdminDashboard: React.FC = () => {
     setIsSimulating(true);
     try {
       const res = await adminApi.simulateMatchRound();
+      
+      let participantsStr = '';
+      if (res.participants && res.participants.length > 0) {
+        participantsStr = `\n\n【参与匹配的学生 (${res.participants.length}人)】\n` + 
+          res.participants.map(p => `- ${p.nickname || '无名氏'} (${p.email})`).join('\n');
+      }
+
       window.alert(
         `【模拟匹配测算完成】\n` +
         `参与人数: ${res.total_participants} 人\n` +
         `产出对数: ${res.matched_pairs} 对\n` +
         `成双率(参与度): ${(res.success_rate * 100).toFixed(1)}%\n` +
         `总体均分: ${res.avg_score} 分\n` +
-        `耗时: ${res.time_cost_ms} 毫秒`
+        `耗时: ${res.time_cost_ms} 毫秒` +
+        participantsStr
       );
     } catch (err: any) {
       error('模拟匹配失败: ' + err.message);

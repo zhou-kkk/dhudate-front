@@ -36,6 +36,12 @@ export interface AdminUserListResponse {
   size: number;
 }
 
+export interface AdminSimulateParticipant {
+  user_id: string;
+  email: string;
+  nickname: string;
+}
+
 export interface AdminSimulateResponse {
   round_id: string;
   total_participants: number;
@@ -43,6 +49,7 @@ export interface AdminSimulateResponse {
   success_rate: number;
   avg_score: number;
   time_cost_ms: number;
+  participants?: AdminSimulateParticipant[];
 }
 
 export const adminApi = {
