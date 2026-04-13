@@ -5,7 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { useToast } from '../../components/ui/Toast';
 import { adminApi } from '../../services/adminApi';
 import type { AdminStatsResponse, AdminUserListItem } from '../../services/adminApi';
-import { ShieldAlert, Users, HeartHandshake, Database, ChevronLeft, ChevronRight, Zap, RefreshCw } from 'lucide-react';
+import { ShieldAlert, Users, HeartHandshake, Database, ChevronLeft, ChevronRight, Zap, RefreshCw, Mail, UserPlus } from 'lucide-react';
 import './AdminDashboard.css';
 
 const AdminDashboard: React.FC = () => {
@@ -22,6 +22,8 @@ const AdminDashboard: React.FC = () => {
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [isTriggering, setIsTriggering] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
+  const [isNudgingIncomplete, setIsNudgingIncomplete] = useState(false);
+  const [isNudgingUnjoined, setIsNudgingUnjoined] = useState(false);
 
   useEffect(() => {
     fetchStats();
@@ -62,10 +64,17 @@ const AdminDashboard: React.FC = () => {
     try {
       const res = await adminApi.simulateMatchRound();
       
-      let participantsStr = '';
-      if (res.participants && res.participants.length > 0) {
-        participantsStr = `\n\n【参与匹配的学生 (${res.participants.length}人)】\n` + 
-          res.participants.map(p => `- ${p.nickname || '无名氏'} (${p.email})`).join('\n');
+      // 构建匹配成功用户对的展示字符串
+      let matchesStr = '';
+      if (res.matches && res.matches.length > 0) {
+        matchesStr = `\n\n【成功匹配的用户对 (${res.matches.length}对)】\n` + 
+          res.matches.map((m, i) => {
+            const nameA = m.user_a.nickname || '无名氏';
+            const nameB = m.user_b.nickname || '无名氏';
+            return `${i + 1}. ${nameA} (${m.user_a.email}) ↔ ${nameB} (${m.user_b.email})  分数: ${m.score}`;
+          }).join('\n');
+      } else {
+        matchesStr = '\n\n暂无成功匹配的用户对。';
       }
 
       window.alert(
@@ -75,7 +84,7 @@ const AdminDashboard: React.FC = () => {
         `成双率(参与度): ${(res.success_rate * 100).toFixed(1)}%\n` +
         `总体均分: ${res.avg_score} 分\n` +
         `耗时: ${res.time_cost_ms} 毫秒` +
-        participantsStr
+        matchesStr
       );
     } catch (err: any) {
       error('模拟匹配失败: ' + err.message);
@@ -102,6 +111,50 @@ const AdminDashboard: React.FC = () => {
       error('触发失败: ' + err.message);
     } finally {
       setIsTriggering(false);
+    }
+  };
+
+  // 催告未完善信息的用户
+  const handleNudgeIncomplete = async () => {
+    const confirmMsg = '将向所有未完善个人资料或未完成问卷的已验证用户发送催告邮件。\n\n确定发送吗？';
+    if (!window.confirm(confirmMsg)) return;
+
+    setIsNudgingIncomplete(true);
+    try {
+      const res = await adminApi.nudgeIncomplete();
+      if (res.total_targets === 0) {
+        success('所有用户都已完善信息，无需催告 🎉');
+      } else {
+        success(`催告邮件任务已提交！目标 ${res.total_targets} 人，正在后台发送...`);
+      }
+    } catch (err: any) {
+      error('催告发送失败: ' + err.message);
+    } finally {
+      setIsNudgingIncomplete(false);
+    }
+  };
+
+  // 催参未报名匹配的用户
+  const handleNudgeUnjoined = async () => {
+    if (!stats?.current_round) {
+      error('当前没有进行中的匹配轮次');
+      return;
+    }
+    const confirmMsg = `将向所有已完善信息但未报名第 ${stats.current_round.round_number} 期匹配的用户发送催参邮件。\n\n确定发送吗？`;
+    if (!window.confirm(confirmMsg)) return;
+
+    setIsNudgingUnjoined(true);
+    try {
+      const res = await adminApi.nudgeUnjoined();
+      if (res.total_targets === 0) {
+        success('所有符合条件的用户都已报名，无需催参 🎉');
+      } else {
+        success(`催参邮件任务已提交！目标 ${res.total_targets} 人，正在后台发送...`);
+      }
+    } catch (err: any) {
+      error('催参发送失败: ' + err.message);
+    } finally {
+      setIsNudgingUnjoined(false);
     }
   };
 
@@ -184,6 +237,50 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </div>
           ) : null}
+        </section>
+
+        {/* 催告操作区 */}
+        <section className="admin-section">
+          <div className="section-title">
+            <h2>群发催告</h2>
+          </div>
+          <div className="nudge-grid">
+            <Card glass className="nudge-card">
+              <div className="nudge-info">
+                <Mail size={20} className="nudge-icon" />
+                <div>
+                  <div className="nudge-title">📝 催完善信息</div>
+                  <div className="nudge-desc">向未填写资料或未完成问卷的已验证用户发送提醒邮件</div>
+                </div>
+              </div>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleNudgeIncomplete} 
+                isLoading={isNudgingIncomplete}
+              >
+                发送催告
+              </Button>
+            </Card>
+            <Card glass className="nudge-card">
+              <div className="nudge-info">
+                <UserPlus size={20} className="nudge-icon" />
+                <div>
+                  <div className="nudge-title">🎯 催参加匹配</div>
+                  <div className="nudge-desc">向已完善信息但未报名当前轮次的用户发送催参邮件</div>
+                </div>
+              </div>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleNudgeUnjoined} 
+                isLoading={isNudgingUnjoined}
+                disabled={!stats?.current_round}
+              >
+                发送催参
+              </Button>
+            </Card>
+          </div>
         </section>
 
         {/* 众生相查阅 */}

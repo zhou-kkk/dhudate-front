@@ -225,3 +225,46 @@
   font-size: 0.85rem;
   color: #888;
 }
+
+/* 催告操作区 */
+.nudge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 16px;
+}
+
+.nudge-card {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nudge-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+}
+
+.nudge-icon {
+  color: var(--primary);
+  opacity: 0.8;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.nudge-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #eee;
+  margin-bottom: 4px;
+}
+
+.nudge-desc {
+  font-size: 0.8rem;
+  color: #777;
+  line-height: 1.5;
+}
+

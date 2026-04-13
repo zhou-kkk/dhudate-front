@@ -42,6 +42,13 @@ export interface AdminSimulateParticipant {
   nickname: string;
 }
 
+// 模拟匹配成功的用户对
+export interface AdminSimulateMatchedPair {
+  user_a: AdminSimulateParticipant;
+  user_b: AdminSimulateParticipant;
+  score: number;
+}
+
 export interface AdminSimulateResponse {
   round_id: string;
   total_participants: number;
@@ -49,7 +56,15 @@ export interface AdminSimulateResponse {
   success_rate: number;
   avg_score: number;
   time_cost_ms: number;
-  participants?: AdminSimulateParticipant[];
+  matches?: AdminSimulateMatchedPair[];
+}
+
+// 催告邮件发送结果
+export interface NudgeResponse {
+  total_targets: number;
+  sent: number;
+  failed: number;
+  targets: string[];
 }
 
 export const adminApi = {
@@ -67,5 +82,15 @@ export const adminApi = {
 
   simulateMatchRound: async (roundId: string = 'current'): Promise<AdminSimulateResponse> => {
     return await api.post(`/admin/rounds/${roundId}/simulate`);
-  }
+  },
+
+  // 催告未完善信息的用户
+  nudgeIncomplete: async (): Promise<NudgeResponse> => {
+    return await api.post('/admin/nudge/incomplete');
+  },
+
+  // 催参未报名匹配的用户
+  nudgeUnjoined: async (): Promise<NudgeResponse> => {
+    return await api.post('/admin/nudge/unjoined');
+  },
 };
