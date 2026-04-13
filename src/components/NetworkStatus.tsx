@@ -11,7 +11,7 @@ const NetworkStatus: React.FC = () => {
   const checkHealth = useCallback(async () => {
     // 如果物理断网，就没有必要去请求后端了
     if (!navigator.onLine) return;
-    
+
     try {
       await api.get('/health');
       setIsServerDown(false);
@@ -36,8 +36,8 @@ const NetworkStatus: React.FC = () => {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // 轮询服务器心跳 (每隔 30 秒)
-    const intervalId = setInterval(checkHealth, 30000);
+    // 轮询服务器心跳 (每隔 60 秒)
+    const intervalId = setInterval(checkHealth, 60000);
     // 初始检查
     checkHealth();
 
@@ -69,12 +69,12 @@ const NetworkStatus: React.FC = () => {
             <p>我们正在对系统进行升级维护，当前部分功能可能不可用。</p>
           </>
         )}
-        <button 
-          className="network-retry-btn" 
+        <button
+          className="network-retry-btn"
           onClick={() => {
             if (!navigator.onLine) {
-               // 强制触发一次试图连网检测
-               if (navigator.onLine) setIsOffline(false);
+              // 强制触发一次试图连网检测
+              if (navigator.onLine) setIsOffline(false);
             }
             checkHealth();
           }}
