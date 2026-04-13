@@ -62,8 +62,7 @@ export interface AdminSimulateResponse {
 // 催告邮件发送结果
 export interface NudgeResponse {
   total_targets: number;
-  sent: number;
-  failed: number;
+  queued: number;   // 已排入发送队列数（异步发送，非实时结果）
   targets: string[];
 }
 
